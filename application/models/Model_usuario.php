@@ -6,7 +6,7 @@ date_default_timezone_set('America/La_Paz');
 class Model_usuario extends CI_Model
 {
     public $idusuario;
-    public $nivel;
+    public $idrol;
     public $nombre;
     public $tipo_documento;
     public $num_documento;
@@ -36,12 +36,10 @@ class Model_usuario extends CI_Model
     {
         # code...
         $estado_code = array();
-        /*$registro = new DateTime("now", new DateTimeZone('America/La_Paz'));
-		$registro = $registro->format('Y-m-d');*/
+       
         if(isset($_POST["txtnombre"]))
-        {
-            $p=$_POST["txtnivel"];
-            $this->nivel = (int)$p;
+        {   $this->idusuario = (int)$_POST["txtidusuario"]; 
+            $this->idrol=(int)$_POST["txtidrol"];
             $this->nombre = $_POST["txtnombre"];
             $this->tipo_documento = $_POST["txttipo_documento"];
             $this->num_documento = $_POST["txtnum_documento"];
@@ -49,7 +47,7 @@ class Model_usuario extends CI_Model
             $this->telefono = $_POST["txttelefono"];
             $this->email = $_POST["txtemail"];
             $this->password = $_POST["txtpassword"];
-            $this->estado = 'activo';
+            $this->estado = 1;
             //para guardar
             $insertado = $this->db->insert('usuario', $this);
             $estado_code = array("http"=>http_response_code(201),"estado"=>"ok");
@@ -58,39 +56,53 @@ class Model_usuario extends CI_Model
         }
         else
         {
-            return $estado_code = array("http"=>http_response_code(500),"estado"=>"mall");
+            return $estado_code = array("http"=>http_response_code(500),"estado"=>"NO SE INSERTO");
         }
         
     }
     public function listar_usuario()
     {
         # code...
-        $this->db->select('idusuario, nombre,direccion,telefono, email');
+        $this->db->select('idusuario, nombre,direccion,telefono, email,estado');
         $query = $this->db->get('usuario');
         return $query->result();
     } 
     public function update_usuario()
     {
-        # code...
-        if(isset($_POST["txtidusuario"]))
-        {
-            $this->idusuario = $_POST["txtidusuario"];
-            $this->nombre = $_POST["txtnombre"];
-            //$this->db->update('usuario', array('nombre' => $_POST['txtnombre']), array('idusuario' => $_POST['txtidusuario']));
-            $this->db->where('idusuario', $id_persona);
-            $this->db->update('usuario', array('nombre' => $_POST['txtnombre']), array('idusuario' => $_POST['txtidusuario']));
-             $estado_code = array("http"=>http_response_code(201),"estado"=>"ok","nombre"=>"nombre");
-            return $estado_code;
-        }
-        else
-        {
-            return $estado_code = array("http"=>http_response_code(500),"estado"=>"NO se edito el nombre");
-        }
+            $this->idusuario = $_GET["txtidusuario"];
+            $this->idrol = (int)$_GET["txtidrol"];
+            $this->nombre = $_GET["txtnombre"];
+            $this->tipo_documento = $_GET["txttipo_documento"];
+            $this->num_documento = $_GET["txtnum_documento"];
+            $this->direccion = $_GET["txtdireccion"];
+            $this->telefono = $_GET["txttelefono"];
+            $this->email = $_GET["txtemail"];
+            $this->password = $_GET["txtpassword"];
+            $this->estado = (int)$_GET["txtestado"];
 
-        public function actualizar($persona, $id_persona) {
-            $this->db->where('id', $id_persona);
-            $this->db->update('personas', $persona);
-        }//end actualizar
+            $this->db->update('usuario',//paramtro nombre de tabla
+
+            array('idrol' => $_GET["txtidrol"],
+            'nombre' => $_GET["txtnombre"],
+            'tipo_documento' => $_GET["txttipo_documento"],
+            'num_documento' => $_GET["txtnum_documento"],
+            'direccion' => $_GET["txtdireccion"],
+            'telefono' => $_GET["txttelefono"],
+            'email' => $_GET["txtemail"],
+            'password' => $_GET["txtpassword"],
+            'estado' => (int)$_GET["txtestado"]
+            )//parametro atributos de la tabla
+            , array('idusuario' => $_GET["txtidusuario"]));//parametro condicion
+            if($this->db->affected_rows())
+            {
+                $estado_code = array("http"=>http_response_code(201),"estado"=>"ok");
+                return $estado_code;
+            } 
+            else 
+            {
+                return $estado_code = array("http"=>http_response_code(500),"estado"=>"no se cargo en la bd");
+            }
+           
     }   
 }
 
