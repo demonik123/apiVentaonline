@@ -21,19 +21,21 @@ class Model_producto extends CI_Model
         $estado_code = array();
         /*$registro = new DateTime("now", new DateTimeZone('America/La_Paz'));
 		$registro = $registro->format('Y-m-d');*/
-        if(isset($_POST["txtcodigo"]))
+        if(isset($_POST["txtnombre"]))
         {
-            $this->idproducto = (int)$_POST["txtidprod"];
-            $this->idcategoria =(int) $_POST["txtidcat"];
-            $this->codigo = $_POST["txtcodigo"];
+            $p=$_POST["txtnivel"];
+            $this->nivel = (int)$p;
             $this->nombre = $_POST["txtnombre"];
-            $this->precio_venta = $_POST["txtpre"];
-            $this->stock = (int)$_POST["txtstock"];
-            $this->descripcion = $_POST["txtdesc"];
-            $this->estado = (int)$_POST["txtestado"];
+            $this->tipo_documento = $_POST["txttipo_documento"];
+            $this->num_documento = $_POST["txtnum_documento"];
+            $this->direccion = $_POST["txtdireccion"];
+            $this->telefono = $_POST["txttelefono"];
+            $this->email = $_POST["txtemail"];
+            $this->password = $_POST["txtpassword"];
+            $this->estado = 'activo';
             //para guardar
-            $insertado = $this->db->insert('producto', $this);
-            $estado_code = array("http"=>http_response_code(201),"estado"=>"todo blue");
+            $insertado = $this->db->insert('usuario', $this);
+            $estado_code = array("http"=>http_response_code(201),"estado"=>"ok");
 			//return $this->db->save_queries;
             return $estado_code;
         }
@@ -50,30 +52,42 @@ class Model_producto extends CI_Model
         $query = $this->db->get('producto');
         return $query->result();
     } 
-    public function update_usuario()
-    {
-        # code...
-        if(isset($_POST["txtidusuario"]))
-        {
-            $this->idusuario = $_POST["txtidusuario"];
-            $this->nombre = $_POST["txtnombre"];
-            //$this->db->update('usuario', array('nombre' => $_POST['txtnombre']), array('idusuario' => $_POST['txtidusuario']));
-            $this->db->where('idusuario', $this->idusuario);
-            $this->db->update('usuario', array('nombre' => $_POST['txtnombre']), array('idusuario' => $_POST['txtidusuario']));
-            $estado_code = array("http"=>http_response_code(201),"estado"=>"ok","nombre"=>"nombre");
-            return $estado_code;
-        }
-        else
-        {
-            return $estado_code = array("http"=>http_response_code(500),"estado"=>"NO se edito el nombre");
-        }
 
+    public function update_producto()
+    {
+            $this->idproducto = (int)$_GET["txtidprod"];
+            $this->idcategoria = (int)$_GET["txtidcat"];
+            $this->codigo = $_GET["txtcodigo"];
+            $this->nombre = $_GET["txtnombre"];
+            $this->precio_venta = $_GET["txtpre"];
+            $this->stock = (int)$_GET["txtstock"];
+            $this->descripcion = $_GET["txtdesc"];
+            $this->estado =(int) $_GET["txtestado"];
+         
+
+            $this->db->update('producto',//paramtro nombre de tabla
+
+            array('idproducto' =>  $this->idproducto,
+            'idcategoria' =>$this->idcategoria,
+            'codigo' =>  $this->codigo,
+            'nombre' =>  $this->nombre,
+            'precio_venta' => $this->precio_venta,
+            'stock' => $this->stock ,
+            'descripcion' => $this->descripcion,
+            'estado' =>  $this->estado
+            )//parametro atributos de la tabla
+            , array('idproducto' => $_GET["txtidprod"]));//parametro condicion
+            if($this->db->affected_rows())
+            {
+                $estado_code = array("http"=>http_response_code(201),"estado"=>"ok");
+                return $estado_code;
+            } 
+            else 
+            {
+                return $estado_code = array("http"=>http_response_code(500),"estado"=>"no se cargo en la bd");
+            }
+           
     }   
-    
-    public function actualizar($persona, $id_persona) {
-        $this->db->where('id', $id_persona);
-        $this->db->update('personas', $persona);
-    }//end actualizar
 }
 
 
