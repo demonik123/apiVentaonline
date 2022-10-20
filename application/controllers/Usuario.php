@@ -48,10 +48,9 @@ class Usuario extends REST_Controller
     public function actualizar_put()
     {
         # code...
-      $dato = $this->Model_usuario->update_usuario();
-      $this->response($dato);
+        $dato = $this->Model_usuario->update_usuario();
+        $this->response($dato);
     }
-   
 }
 
 
