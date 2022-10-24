@@ -1,46 +1,38 @@
-<?php
+<?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require APPPATH.'/libraries/REST_Controller.php';
+class Model_categoria extends CI_Model {
 
-class Usuario extends REST_Controller
-{
-    function __construct() {
-        parent::__construct();
-		$this->load->database();
-		$this->load->model('Model_categoria');
-    }
-    
-    public function list_get()
+    public function listar_categoria()
     {
-        # code...
-        $dato= $this->Model_Categoria->listar_categoria();
-        $this->response($dato);
-    } 
-
-    public function guardar_post()
-    {
-        # code...
-        $dato = $this->Model_Categoria->guardar_categoria();
-        $this->response($dato);
-
+        
+        $consulta = $this->db->get('categoria');
+        
+        return $consulta;
     }
 
-    public function actualizar_put()
+    public function obtenerId($id)
     {
-        # code...
-      $dato = $this->Model_Categoria->update_categoria();
-      $this->response($dato);
+        $consulta = $this->db->get_where("categoria", ['idcategoria' => $id]);
+        return $consulta;
     }
-    
-    public function eliminar_delete()
+
+    public function guardarCategoria($data)
     {
-        # code...
-      $dato = $this->Model_Categoria->delete_categoria();
-      $this->response($dato);
+        return $this->db->insert('categoria', $data);
     }
+
+    public function editarCategoria($id, $data)
+    {
+        $this->db->where('idcategoria', $id);
+        return $this->db->update('categoria', $data); 
+    }
+
+    public function eliminarCategoria($id)
+    {
+        $this->db->where('idcategoria', $id);
+        
+       return $this->db->delete('categoria');
+    }
+
 }
-
-
-
-?>

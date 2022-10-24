@@ -6,12 +6,12 @@ require APPPATH.'/libraries/REST_Controller.php';
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 
-class Categoria extends REST_Controller {
+class Ingreso extends REST_Controller {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Model_categoria');
+        $this->load->model('Model_ingreso');
     }
 
     public function index_get()
@@ -20,7 +20,7 @@ class Categoria extends REST_Controller {
 
         if(!empty($id)) {
 
-            $data = $this->Model_categoria->obtenerId($id)->result();
+            $data = $this->Model_ingreso->obtenerId($id)->result();
 
             if($data) {
                 $res['error'] = false;
@@ -34,7 +34,7 @@ class Categoria extends REST_Controller {
 
         }else {
 
-            $data = $this->Model_categoria->listar_categoria()->result();
+            $data = $this->Model_ingreso->listar_ingreso()->result();
 
             if($data) {
                 $res['error'] = false;
@@ -55,17 +55,29 @@ class Categoria extends REST_Controller {
 
     public function index_post()
     {
-        $nombre = $this->input->post('nombre');
-        $descripcion = $this->input->post('descripcion');
+        $idusuario = $this->input->post('idusuario');
+        $idpersona = $this->input->post('idpersona');
+        $tipo_comprobante = $this->input->post('tipo_comprobante');
+        $serie_comprobante = $this->input->post('serie_comprobante');
+        $num_comprobante = $this->input->post('num_comprobante');
+        $fecha = $this->input->post('fecha');
+        $impuesto = $this->input->post('impuesto');
+        $total = $this->input->post('total');
         $estado = $this->input->post('estado');
 
         $data = array(
-            'nombre' => $nombre,
-            'descripcion' => $descripcion,
+            'idusuario' => $idusuario,
+            'idpersona' => $idpersona,
+            'tipo_comprobante' => $tipo_comprobante,
+            'serie_comprobante' => $serie_comprobante,
+            'num_comprobante' => $num_comprobante,
+            'fecha' => $fecha,
+            'impuesto' => $impuesto,
+            'total' => $total,
             'estado' => $estado
         );
 
-        $insert = $this->Model_categoria->guardarCategoria($data);
+        $insert = $this->Model_ingreso->guardarIngreso($data);
 
         if($insert) {
             $res['error'] = false;
@@ -85,18 +97,30 @@ class Categoria extends REST_Controller {
     {
         $id = $this->input->get('id');
 
-        $nombre = $this->put('nombre');
-        $descripcion = $this->put('descripcion');
+        $idusuario = $this->put('idusuario');
+        $idpersona = $this->put('idpersona');
+        $tipo_comprobante = $this->put('tipo_comprobante');
+        $serie_comprobante = $this->put('serie_comprobante');
+        $num_comprobante = $this->put('num_comprobante');
+        $fecha = $this->put('fecha');
+        $impuesto = $this->put('impuesto');
+        $total = $this->put('total');
         $estado = $this->put('estado');
 
         $data = array(
-            'nombre' => $nombre,
-            'descripcion' => $descripcion,
+            'idusuario' => $idusuario,
+            'idpersona' => $idpersona,
+            'tipo_comprobante' => $tipo_comprobante,
+            'serie_comprobante' => $serie_comprobante,
+            'num_comprobante' => $num_comprobante,
+            'fecha' => $fecha,
+            'impuesto' => $impuesto,
+            'total' => $total,
             'estado' => $estado
         );
 
         if(!empty($id)) {
-           $update = $this->Model_categoria->editarCategoria($id, $data);
+           $update = $this->Model_ingreso->editarIngreso($id, $data);
 
            if($update) {
                 $res['error'] = false;
@@ -123,7 +147,7 @@ class Categoria extends REST_Controller {
 
         if(!empty($id)) {
 
-            $delete = $this->Model_categoria->eliminarCategoria($id);
+            $delete = $this->Model_ingreso->eliminarIngreso($id);
 
             if($delete) {
                 $res['error'] = false;
