@@ -1,0 +1,60 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+require APPPATH.'/libraries/REST_Controller.php';
+
+
+class producto extends REST_Controller
+{
+    function __construct() {
+        parent::__construct();
+		$this->load->database();
+		$this->load->model('ModelDetalleIngreso');
+    }
+    
+    public function list_get()
+    {
+        # code...
+        $dato= $this->ModelDetalleIngreso->listar_detalleIngreso();
+        $this->response($dato);
+    } 
+
+    public function guardar_post()
+    {
+        # code...
+        $dato = $this->ModelDetalleIngreso->guardar_detalleIngreso();
+        $this->response($dato);
+
+    }
+
+    public function actualizar_put()
+    {
+        # code...
+      $dato = $this->ModelDetalleIngreso->update_detalleIngreso();
+      $this->response($dato);
+    }
+   
+
+
+    public function logindetalleIngreso_post()
+    {
+        # code...
+        $data = $this->ModelDetalleIngreso->logindetalleIngreso();
+                if($data){
+                    $respuesta = array(
+                        'err' => false,
+                        'desc' => "Inicio de sección correcto.",
+                        'producto' => $data
+                    );
+                }else{
+                    $respuesta = array(
+                        'err' => true,
+                        'desc' => "El detalle o código son incorrectos.",
+                        'producto' => null
+                    );
+                }
+                $this->response($respuesta);
+    }
+
+}
+?>
