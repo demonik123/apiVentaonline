@@ -3,43 +3,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require APPPATH.'/libraries/REST_Controller.php';
 
-class Producto extends REST_Controller
+class Ventas extends REST_Controller
 {
     function __construct() {
         parent::__construct();
 		$this->load->database();
-		$this->load->model('Model_producto');
+		$this->load->model('Model_ventas');
     }
-    
     public function list_get()
     {
         # code...
-        $dato= $this->Model_producto->listar_producto();
+        $dato= $this->Model_ventas->listar_venta();
         $this->response($dato);
     } 
 
     public function guardar_post()
     {
         # code...
-        $dato = $this->Model_producto->guardar_producto();
+        $dato = $this->Model_ventas->guardar_ventas();
         $this->response($dato);
 
     }
     public function actualizar_post()
     {
         # code...
-      $dato = $this->Model_producto->update_producto();
+      $dato = $this->Model_ventas->update_venta();
       $this->response($dato);
     }
-   
-    public function listid_get()
+    
+    public function buscar_get()
     {
-        $dato= $this->Model_producto->buscar_producto();
-        $this->response($dato);
-    }
-    public function eliminar_get(){
-        $dato = $this->Model_producto->eliminar_producto();
-        $this->response($dato);
+        # code...
+      $dato = $this->Model_ventas->buscar_por_fecha();
+      $this->response($dato);
     }
 }
 ?>
