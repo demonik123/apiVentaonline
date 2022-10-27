@@ -118,5 +118,15 @@ class Model_ventas extends CI_Model
         $query =$this->db->get();
         return $query->result();
     }  
+    public function Nro_ventas_por_fecha_rango()
+    {
+        $this->db->select('count(d.iddetalle_venta) as Nro');
+        $this->db->from('detalle_venta d');
+        $this->db->join('venta v', 'd.idventa = v.idventa', 'inner');
+        $this->db->where('v.fecha_hora >=', $_GET["txtfecha1"]);
+        $this->db->where('v.fecha_hora <=', $_GET["txtfecha2"]);
+        $query =$this->db->get();
+        return $query->result();
+    } 
 }
 ?>
