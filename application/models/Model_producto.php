@@ -78,9 +78,43 @@ class Model_producto extends CI_Model
             else 
             {
                 return $estado_code = array("http"=>http_response_code(500),"estado"=>"no se cargo en la bd");
-            }
-           
+            } 
     }   
+
+    public function buscar_producto()
+    {
+        //$respuestaTotalEstudiante = array();
+        $this->db->select('idproducto,idcategoria,codigo,nombre,precio_venta,stock,descripcion,estado');
+        $array = array('idproducto' => (int)$_GET["txtidprod"]);
+        $query = $this->db->where($array);
+        $query = $this->db->get('producto');
+        $respuesta = $query->result();
+        //foreach ($respuesta as $respuestas) {
+        //    $respuestaTotalEstudiante [] =  array('nombre' => $respuestas->nombre,'estado' => $respuestas->estado);
+        //}
+        return $respuesta;
+    } 
+
+    public function eliminar_producto()
+    {
+        $this->idproducto = (int)$_GET["txtidprod"];
+        $this->estado = 0;
+        
+        $this->db->update('producto',//paramtro nombre de tabla
+            array('idproducto' =>  $this->idproducto,
+            'estado' =>  $this->estado
+            )//parametro atributos de la tabla
+            , array('idproducto' => $_GET["txtidprod"]));//parametro condicion
+            if($this->db->affected_rows())
+            {
+                $estado_code = array("http"=>http_response_code(201),"estado"=>"ok");
+                return $estado_code;
+            } 
+            else 
+            {
+                return $estado_code = array("http"=>http_response_code(500),"estado"=>"no se cargo en la bd");
+            }
+    }
 }
 
 

@@ -17,7 +17,17 @@ class Producto extends REST_Controller
         $dato= $this->Model_producto->listar_producto();
         $this->response($dato);
     } 
+    public function listid_get()
+    {
+        $dato= $this->Model_producto->buscar_producto();
+        $this->response($dato);
+    } 
 
+    public function eliminar_get(){
+        $dato = $this->Model_producto->eliminar_producto();
+        $this->response($dato);
+    }
+    
     public function guardar_post()
     {
         # code...
