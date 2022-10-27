@@ -14,66 +14,107 @@ class Model_producto extends CI_Model
     public $descripcion;
     public $estado;
 
-
     public function guardar_producto()
     {
         # code...
         $estado_code = array();
-        /*$registro = new DateTime("now", new DateTimeZone('America/La_Paz'));
-		$registro = $registro->format('Y-m-d');*/
-        if(isset($_POST["txtcodigo"]))
-        {
-            $this->idproducto = (int)$_POST["txtidprod"];
-            $this->idcategoria =(int) $_POST["txtidcat"];
+       
+        if(isset($_POST["txtnombre"]))
+        {   //$this->idproducto = (int)$_POST["txtidproducto"]; 
+            $this->idcategoria=(int)$_POST["txtidcategoria"];
             $this->codigo = $_POST["txtcodigo"];
             $this->nombre = $_POST["txtnombre"];
-            $this->precio_venta = $_POST["txtpre"];
+            $this->precio_venta = (double)$_POST["txtprecio_venta"];
             $this->stock = (int)$_POST["txtstock"];
-            $this->descripcion = $_POST["txtdesc"];
-            $this->estado = (int)$_POST["txtestado"];
+            $this->descripcion = $_POST["txtdescripcion"];
+            $this->estado = 1;
             //para guardar
             $insertado = $this->db->insert('producto', $this);
-            $estado_code = array("http"=>http_response_code(201),"estado"=>"todo blue");
+            $estado_code = array("http"=>http_response_code(201),"estado"=>"ok");
 			//return $this->db->save_queries;
             return $estado_code;
         }
         else
         {
-            return $estado_code = array("http"=>http_response_code(500),"estado"=>"mall");
+            return $estado_code = array("http"=>http_response_code(500),"estado"=>"NO SE INSERTO");
         }
         
     }
     public function listar_producto()
     {
         # code...
-        $this->db->select('idproducto,idcategoria,codigo,nombre,precio_venta,stock,descripcion,estado');
+        $this->db->select('idproducto, idcategoria,codigo,nombre, precio_venta,descripcion,estado');
         $query = $this->db->get('producto');
         return $query->result();
     } 
-    public function update_usuario()
+    public function update_producto()
     {
-        # code...
-        if(isset($_POST["txtidusuario"]))
-        {
-            $this->idusuario = $_POST["txtidusuario"];
-            $this->nombre = $_POST["txtnombre"];
-            //$this->db->update('usuario', array('nombre' => $_POST['txtnombre']), array('idusuario' => $_POST['txtidusuario']));
-            $this->db->where('idusuario', $this->idusuario);
-            $this->db->update('usuario', array('nombre' => $_POST['txtnombre']), array('idusuario' => $_POST['txtidusuario']));
-            $estado_code = array("http"=>http_response_code(201),"estado"=>"ok","nombre"=>"nombre");
-            return $estado_code;
-        }
-        else
-        {
-            return $estado_code = array("http"=>http_response_code(500),"estado"=>"NO se edito el nombre");
-        }
+            //$this->idproducto = (int)$_GET["txtidproducto"]; 
 
-    }   
+            $this->idcategoria= (int)$_GET["txtidcategoria"];
+            $this->codigo = $_GET["txtcodigo"];
+            $this->nombre = $_GET["txtnombre"];
+            $this->precio_venta = (double)$_GET["txtprecio_venta"];
+            $this->stock = (int)$_GET["txtstock"];
+            $this->descripcion = $_GET["txtdescripcion"];
+            $this->estado = (int)$_GET["txtestado"];
+
+            $this->db->update('producto',//paramtro nombre de tabla
+
+            array('idcategoria' => (int)$_GET["txtidcategoria"],
+            'codigo' => $_GET["txtcodigo"],
+            'nombre' => $_GET["txtnombre"],
+            'precio_venta' =>(double)$_GET["txtprecio_venta"],
+            'stock' => (int)$_GET["txtstock"],
+            'descripcion' => $_GET["txtdescripcion"],
+            'estado' => (int)$_GET["txtestado"]
+            )//parametro atributos de la tabla
+            , array('idproducto' =>(int)$_GET["txtidproducto"]));//parametro condicion
+            if($this->db->affected_rows())
+            {
+                $estado_code = array("http"=>http_response_code(201),"estado"=>"ok");
+                return $estado_code;
+            } 
+            else 
+            {
+                return $estado_code = array("http"=>http_response_code(500),"estado"=>"no se cargo en la bd");
+            }
+           
+    } 
     
-    public function actualizar($persona, $id_persona) {
-        $this->db->where('id', $id_persona);
-        $this->db->update('personas', $persona);
-    }//end actualizar
+    public function buscar_producto()
+    {
+        //$respuestaTotalEstudiante = array();
+        $this->db->select('idproducto,idcategoria,codigo,nombre,precio_venta,stock,descripcion,estado');
+        $array = array('idproducto' => (int)$_GET["txtidprod"]);
+        $query = $this->db->where($array);
+        $query = $this->db->get('producto');
+        $respuesta = $query->result();
+        //foreach ($respuesta as $respuestas) {
+        //    $respuestaTotalEstudiante [] =  array('nombre' => $respuestas->nombre,'estado' => $respuestas->estado);
+        //}
+        return $respuesta;
+    } 
+    public function eliminar_producto()
+    {
+        $this->idproducto = (int)$_GET["txtidprod"];
+        $this->estado = 0;
+        
+        $this->db->update('producto',//paramtro nombre de tabla
+            array('idproducto' =>  $this->idproducto,
+            'estado' =>  $this->estado
+            )//parametro atributos de la tabla
+            , array('idproducto' => $_GET["txtidprod"]));//parametro condicion
+            if($this->db->affected_rows())
+            {
+                $estado_code = array("http"=>http_response_code(201),"estado"=>"ok");
+                return $estado_code;
+            } 
+            else 
+            {
+                return $estado_code = array("http"=>http_response_code(500),"estado"=>"no se cargo en la bd");
+            }
+    }
 }
 
 

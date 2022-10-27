@@ -45,7 +45,7 @@ class Usuario extends REST_Controller
                 }
                 $this->response($respuesta);
     }
-    public function actualizar_put()
+    public function actualizar_post()
     {
         # code...
       $dato = $this->Model_usuario->update_usuario();
@@ -53,7 +53,4 @@ class Usuario extends REST_Controller
     }
    
 }
-
-
-
 ?>
