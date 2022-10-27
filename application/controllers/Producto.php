@@ -21,13 +21,14 @@ class Producto extends REST_Controller
     public function guardar_post()
     {
         # code...
-        $dato = $this->Model_producto->guardar_producto();
+        $dato = $this->Model_producto->guardar_usuario();
         $this->response($dato);
 
     }
     public function actualizar_post()
     {
         # code...
+<<<<<<< HEAD
       $dato = $this->Model_producto->update_producto();
       $this->response($dato);
     }
@@ -39,6 +40,9 @@ class Producto extends REST_Controller
     }
     public function eliminar_get(){
         $dato = $this->Model_producto->eliminar_producto();
+=======
+        $dato = $this->Model_producto->update_producto();
+>>>>>>> boris
         $this->response($dato);
     }
 }

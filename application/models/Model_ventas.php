@@ -96,8 +96,14 @@ class Model_ventas extends CI_Model
         $this->db->select('v.idventa, p.nombre, v.fecha_hora, Sum(d.cantidad) as cantidad');
         $this->db->from('producto p');
         $this->db->join('venta v', 'p.idproducto  = v.idproducto', 'inner');
+<<<<<<< HEAD
         $this->db->join('detalle_venta d', 'd.idventa= v.idventa', 'inner');
         $this->db->where('v.fecha_hora', $_GET["txtfecha"]);
+=======
+
+        $this->db->where('v.fecha_hora', $_GET["txtfecha"]);
+        $this->db->join('detalle_venta d', 'd.idventa= v.idventa', 'inner');
+>>>>>>> boris
         $this->db->group_by('p.nombre');
         $this->db->order_by('d.cantidad','desc');
         $query =$this->db->get();
@@ -105,6 +111,7 @@ class Model_ventas extends CI_Model
         return $query->result();
     }  
 
+<<<<<<< HEAD
     public function buscar_por_fecha_rango()
     {
         $this->db->select('v.idventa, p.nombre, v.fecha_hora, Sum(d.cantidad) as cantidad');
@@ -128,5 +135,20 @@ class Model_ventas extends CI_Model
         $query =$this->db->get();
         return $query->result();
     } 
+=======
+    public function buscar_por_fechaRango()
+    {
+        $this->db->select('sum(v.idventa)');
+        //$this->db->select('v.idventa, p.nombre, v.fecha_hora, Sum(v.idventa) as cantidad');
+        $this->db->from('venta v');
+        $this->db->from('detalle_venta d');
+        $this->db->where('v.fecha_hora >', $_GET["txtfechainicial"]);
+        $this->db->where('v.fecha_hora <', $_GET["txtfechafinal"]);
+        //$this->db->group_by('p.nombre');
+        $query =$this->db->get();
+        
+        return $query->result();
+    }  
+>>>>>>> boris
 }
 ?>
