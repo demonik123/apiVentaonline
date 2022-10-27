@@ -37,5 +37,11 @@ class Ventas extends REST_Controller
       $dato = $this->Model_ventas->buscar_por_fecha();
       $this->response($dato);
     }
+    public function buscarRango_get()
+    {
+        # code...
+      $dato = $this->Model_ventas->buscar_por_fecha_rango();
+      $this->response($dato);
+    }
 }
 ?>
