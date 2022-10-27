@@ -106,7 +106,7 @@ class Model_ventas extends CI_Model
         return $query->result();
     }
 
-    public function Nro_ventas_por_fecha_rango()
+    public function Nro_ventas_por_fecha_rango2()
     {
         $this->db->select('count(d.iddetalle_venta) as Nro');
         $this->db->from('detalle_venta d');

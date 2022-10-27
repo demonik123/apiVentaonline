@@ -38,10 +38,10 @@ class Ventas extends REST_Controller
       $this->response($dato);
     }
 
-    public function NroRango_get()
+    public function NroRango2_get()
     {
         # code...
-      $dato = $this->Model_ventas->Nro_ventas_por_fecha_rango();
+      $dato = $this->Model_ventas->Nro_ventas_por_fecha_rang2();
       $this->response($dato);
     }
     
