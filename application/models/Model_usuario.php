@@ -77,7 +77,7 @@ class Model_usuario extends CI_Model
             $this->idusuario = $_POST["txtidusuario"];
             $this->nombre = $_POST["txtnombre"];
             //$this->db->update('usuario', array('nombre' => $_POST['txtnombre']), array('idusuario' => $_POST['txtidusuario']));
-            $this->db->where('idusuario', $id_persona);
+            $this->db->where('idusuario',);
             $this->db->update('usuario', array('nombre' => $_POST['txtnombre']), array('idusuario' => $_POST['txtidusuario']));
              $estado_code = array("http"=>http_response_code(201),"estado"=>"ok","nombre"=>"nombre");
             return $estado_code;
@@ -86,11 +86,6 @@ class Model_usuario extends CI_Model
         {
             return $estado_code = array("http"=>http_response_code(500),"estado"=>"NO se edito el nombre");
         }
-
-        public function actualizar($persona, $id_persona) {
-            $this->db->where('id', $id_persona);
-            $this->db->update('personas', $persona);
-        }//end actualizar
     }   
 }
 
